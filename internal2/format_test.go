@@ -2,6 +2,7 @@ package format
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -36,4 +37,30 @@ func Benchmark(b *testing.B) {
 	for range b.N {
 		_, _ = n.Encode(12345679)
 	}
+}
+
+func Example_toID() {
+	var b strings.Builder
+	alpha := Alphabet("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+
+	toID(12345678, alpha, &b)
+
+	fmt.Println(b.String())
+
+	// Output: TODO
+}
+
+func Example_toNumber() {
+	var b strings.Builder
+	alpha := Alphabet("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+
+	toID(12345678, alpha, &b)
+	str := b.String()
+
+	num := toNumber([]byte(str), alpha)
+
+	fmt.Println(b.String())
+	fmt.Println(num)
+
+	// Output: TODO
 }
