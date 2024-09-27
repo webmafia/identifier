@@ -2,6 +2,7 @@ package coding
 
 import (
 	"fmt"
+	"math"
 	"testing"
 )
 
@@ -9,7 +10,7 @@ func Example_encode() {
 	alpha := Alphabet("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 	var buf []byte
 
-	a := int64(1839345119141068800)
+	a := int64(math.MaxInt64)
 
 	fmt.Println("length:", encodingLength(alpha, a))
 
@@ -22,8 +23,8 @@ func Example_encode() {
 	// Output:
 	//
 	// length: 11
-	// encoded: GDa8xCYxcvm
-	// decoded: 1839345119141068800
+	// encoded: r6spSk7sFju
+	// decoded: 9223372036854775807
 }
 
 func ExampleEncode() {
