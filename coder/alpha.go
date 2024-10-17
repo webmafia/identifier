@@ -36,7 +36,11 @@ func (c *Coder) validateAlpha() (err error) {
 }
 
 func (c *Coder) alphaChar(offset, index int64) byte {
-	return c.alpha[(offset+index)%c.alphaLen]
+	modIdx := (offset + index) % c.alphaLen
+	if modIdx < 0 {
+		modIdx += c.alphaLen
+	}
+	return c.alpha[modIdx]
 }
 
 func (c *Coder) alphaIndex(offset int64, char byte) int64 {

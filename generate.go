@@ -1,6 +1,6 @@
 package identifier
 
 // Generates a unique ID. This is thread-safe.
-func GenerateId() ID {
+func Generate() ID {
 	return ID(gen.Generate())
 }

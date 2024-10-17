@@ -31,7 +31,7 @@ func NewCoder(alpha ...string) (c *Coder, err error) {
 	}
 
 	c.alphaLen = int64(len(c.alpha))
-	c.minLen = c.encodingLength(math.MaxInt64)
+	c.minLen = encodingLength(c.alphaLen, math.MaxInt64)
 
 	return
 }
