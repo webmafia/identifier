@@ -1,4 +1,4 @@
-package identity
+package node
 
 import (
 	"fmt"
@@ -23,8 +23,6 @@ type Node struct {
 	seqMask   int64
 	timeShift uint8
 	nodeShift uint8
-
-	coder Coder
 }
 
 type Options struct {
@@ -34,8 +32,6 @@ type Options struct {
 
 	// NodeBits holds the number of bits to use for Node. Default 7, max 22
 	NodeBits uint8
-
-	Coder Coder
 }
 
 func (opt *Options) setDefaults() {
@@ -45,10 +41,6 @@ func (opt *Options) setDefaults() {
 
 	if opt.NodeBits == 0 {
 		opt.NodeBits = 7
-	}
-
-	if opt.Coder == nil {
-		opt.Coder = stringCoder{}
 	}
 }
 
@@ -79,7 +71,6 @@ func NewNode(nodeId int64, options ...Options) (n *Node, err error) {
 		return
 	}
 
-	n.coder = opt.Coder
 	n.setup()
 
 	return
@@ -92,7 +83,7 @@ func (n *Node) setup() {
 	n.epoch = curTime.Add(time.Unix(n.epochTs/1000, (n.epochTs%1000)*1000000).Sub(curTime))
 }
 
-func (n *Node) Generate() ID {
+func (n *Node) Generate() int64 {
 	n.mu.Lock()
 	defer n.mu.Unlock()
 
@@ -112,20 +103,13 @@ func (n *Node) Generate() ID {
 
 	n.time = now
 
-	r := ID((now)<<n.timeShift |
+	r := (now << n.timeShift) |
 		(n.node << n.nodeShift) |
-		(n.seq),
-	)
+		(n.seq)
 
 	return r
 }
 
-func (n *Node) Time(id ID) time.Time {
-	return time.UnixMilli((int64(id) >> n.timeShift) + n.epochTs)
-}
-
-func (n *Node) ToString(id ID) string {
-	s, _ := n.coder.Encode([]uint64{uint64(id)})
-
-	return s
+func (n *Node) Time(id int64) time.Time {
+	return time.UnixMilli((id >> n.timeShift) + n.epochTs)
 }

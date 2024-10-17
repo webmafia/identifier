@@ -8,6 +8,7 @@ import (
 var (
 	ErrAlphaTooShort  = errors.New("alphabet is too short (must be at least 3 characters)")
 	ErrAlphaNotUnique = errors.New("not unique characters (bytes) in alphabet")
+	ErrNotInAlpha     = errors.New("encountered character that is not in alphabet")
 )
 
 type Coder struct {
@@ -33,4 +34,8 @@ func NewCoder(alpha ...string) (c *Coder, err error) {
 	c.minLen = c.encodingLength(math.MaxInt64)
 
 	return
+}
+
+func (c *Coder) EncodedLength() int64 {
+	return c.minLen
 }

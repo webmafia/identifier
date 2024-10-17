@@ -1,19 +1,27 @@
 package coder
 
-func (c *Coder) Decode(s string) int64 {
+func (c *Coder) Decode(s string) (int64, error) {
 	return c.decode(s2b(s))
 }
 
-func (c *Coder) decode(buf []byte) (v int64) {
+func (c *Coder) DecodeBytes(buf []byte) (int64, error) {
+	return c.decode(buf)
+}
+
+func (c *Coder) decode(buf []byte) (int64, error) {
 	off := c.alphaIndex(0, buf[0])
 	return c.decodeVal(buf[1:], off)
 }
 
-func (c *Coder) decodeVal(buf []byte, offset int64) (v int64) {
+func (c *Coder) decodeVal(buf []byte, offset int64) (v int64, err error) {
 	multiplier := int64(1)
 	for i := 0; i < len(buf); i++ {
 		char := buf[i]
 		index := c.alphaIndex(offset, char)
+
+		if index < 0 {
+			return 0, ErrNotInAlpha
+		}
 
 		if index == 0 {
 			break
@@ -23,5 +31,5 @@ func (c *Coder) decodeVal(buf []byte, offset int64) (v int64) {
 		multiplier *= c.alphaLen
 	}
 
-	return v
+	return
 }

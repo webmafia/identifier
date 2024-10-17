@@ -10,9 +10,11 @@ func (c *Coder) Encode(v int64) string {
 	return b2s(buf)
 }
 
-func (c *Coder) encode(buf []byte, round, v int64) []byte {
-	buf = buf[:0]
+func (c *Coder) EncodeToSlice(buf []byte, v int64) []byte {
+	return c.encode(buf, 0, v)
+}
 
+func (c *Coder) encode(buf []byte, round, v int64) []byte {
 	if round > c.alphaLen {
 		return buf
 	}

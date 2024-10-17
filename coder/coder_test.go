@@ -4,7 +4,6 @@ import "fmt"
 
 func Example() {
 	c, err := NewCoder()
-	// c, err := NewCoder("bcdfghjklmnpqrstvwxzBCDFGHJKLMNPQRSTVWXZ0123456789")
 
 	if err != nil {
 		panic(err)
@@ -17,7 +16,11 @@ func Example() {
 
 	fmt.Println(v, "=", enc)
 	fmt.Println(v2, "=", enc2)
-	fmt.Println(c.Decode(enc), "(decoded)")
+	fmt.Println(c.Decode(enc))
 
-	// Output: TODO
+	// Output:
+	//
+	// 12345678 = 5olsX5v1apbju
+	// 12345679 = YhgyoYx28WRkM
+	// 12345678 <nil>
 }
