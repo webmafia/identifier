@@ -44,6 +44,39 @@ func Test_encodingLength(t *testing.T) {
 	}
 }
 
+func Test_encodingLengthLarge(t *testing.T) {
+	alpha := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	c, err := NewCoder(alpha)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Logf("alphaLen: %d, maxVal: %d", c.alphaLen, math.MaxInt64)
+
+	logMaxVal := math.Log(float64(math.MaxInt64))
+	logAlphaLen := math.Log(float64(c.alphaLen))
+
+	t.Logf("Log of maxVal: %f", logMaxVal)
+	t.Logf("Log of alphaLen: %f", logAlphaLen)
+
+	for i := int64(math.MaxInt32); i >= int64(math.MaxInt64-10000000); i -= 100_000 {
+		t.Run(fmt.Sprintf("alpha%02d", i), func(t *testing.T) {
+
+			// Calculate predicted length
+			predictedLen := int(encodingLength(c.alphaLen, math.MaxInt64))
+			t.Logf("Predicted length: %d", predictedLen)
+
+			var buf []byte
+			buf = c.encode(buf, i)
+
+			if l := len(buf); l != predictedLen {
+				t.Errorf("predicted %d, but turned out to be %d", predictedLen, l)
+			}
+		})
+	}
+}
+
 func TestEncode(t *testing.T) {
 	alpha := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	c, err := NewCoder(alpha)
@@ -58,6 +91,29 @@ func TestEncode(t *testing.T) {
 
 	for i := 0; i < 10_000; i++ {
 		v := rand.Int63()
+		s := c.Encode(v)
+
+		// Adjust if the encoded length exceeds the prediction (account for edge cases)
+		if l := len(s); l > predictedLen {
+			t.Errorf("%d: predicted %d bytes, but got %d bytes. Value: %d", i, predictedLen, l, v)
+			t.FailNow()
+		}
+	}
+}
+
+func TestEncodeShort(t *testing.T) {
+	alpha := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	c, err := NewCoder(alpha)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Predicted length based on the maximum possible value
+	predictedLen := int(c.EncodedLength())
+
+	for i := 0; i < 10_000; i++ {
+		v := int64(i)
 		s := c.Encode(v)
 
 		// Adjust if the encoded length exceeds the prediction (account for edge cases)
