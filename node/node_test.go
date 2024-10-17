@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func BenchmarkIdentity_bits(b *testing.B) {
+func BenchmarkIdentifier_bits(b *testing.B) {
 	for i := uint8(22); i > 0; i-- {
 		b.Run(fmt.Sprintf("%02d", i), func(b *testing.B) {
 			n, err := NewNode(1, Options{
@@ -25,7 +25,7 @@ func BenchmarkIdentity_bits(b *testing.B) {
 	}
 }
 
-func BenchmarkIdentity_Parallell_bits(b *testing.B) {
+func BenchmarkIdentifier_Parallell_bits(b *testing.B) {
 	for i := uint8(22); i > 0; i-- {
 		b.Run(fmt.Sprintf("%02d", i), func(b *testing.B) {
 			n, err := NewNode(1, Options{

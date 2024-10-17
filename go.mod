@@ -1,4 +1,4 @@
-module github.com/webmafia/identity
+module github.com/webmafia/identifier
 
 go 1.22.5
 

@@ -1,8 +1,8 @@
-package identity
+package identifier
 
 import (
-	"github.com/webmafia/identity/coder"
-	"github.com/webmafia/identity/node"
+	"github.com/webmafia/identifier/coder"
+	"github.com/webmafia/identifier/node"
 )
 
 var (

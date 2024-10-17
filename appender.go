@@ -1,4 +1,4 @@
-package identity
+package identifier
 
 // These interfaces will be added to the `encoding` standard library in Go 1.24.
 // Reference: https://tip.golang.org/doc/go1.24
