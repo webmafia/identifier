@@ -35,6 +35,10 @@ func (id ID) Time() time.Time {
 	return gen.Time(int64(id))
 }
 
+func (id ID) Int64() int64 {
+	return int64(id)
+}
+
 func (id ID) IsZero() bool {
 	return id == 0
 }
@@ -47,7 +51,7 @@ func (id ID) IsNil() bool {
 func (id ID) MarshalJSON() ([]byte, error) {
 	buf := make([]byte, 0, cod.EncodedLength()+2)
 	buf = append(buf, '"')
-	buf = cod.EncodeToSlice(buf, int64(id))
+	buf = cod.AppendEncoded(buf, int64(id))
 	buf = append(buf, '"')
 
 	return buf, nil
@@ -129,7 +133,7 @@ func (id ID) Value() (driver.Value, error) {
 
 // AppendText implements encoding.TextAppender.
 func (id ID) AppendText(b []byte) ([]byte, error) {
-	return cod.EncodeToSlice(b, int64(id)), nil
+	return cod.AppendEncoded(b, int64(id)), nil
 }
 
 // AppendBinary implements encoding.BinaryAppender.

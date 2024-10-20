@@ -2,6 +2,7 @@ package identifier
 
 import (
 	"github.com/webmafia/identifier/coder"
+	"github.com/webmafia/identifier/coder/alpha"
 	"github.com/webmafia/identifier/node"
 )
 
@@ -17,7 +18,8 @@ func init() {
 		panic(err)
 	}
 
-	if cod, err = coder.NewCoder(coder.ShuffleAlpha(1337, "bcdfghjkmnpqrstvwxzBCDFGHJKLMNPQRSTVWXZ02345679")); err != nil {
+	// Use an alphabet without vowels and similar characters
+	if cod, err = coder.New(alpha.NewAlphabet("bcdfghjkmnpqrstvwxzBCDFGHJKLMNPQRSTVWXZ02345679").Shuffle(1337)); err != nil {
 		return
 	}
 }

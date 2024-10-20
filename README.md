@@ -7,7 +7,7 @@ Very fast generator of unique IDs.
   - sequential
   - sortable by time
   - used in databases
-- 14 bytes encoded string
+- 13 bytes encoded string
   - appears random
   - used in JSON
 
