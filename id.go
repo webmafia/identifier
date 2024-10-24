@@ -70,7 +70,14 @@ func (id *ID) UnmarshalJSON(b []byte) (err error) {
 		return ErrInvalidId
 	}
 
-	v, err := cod.DecodeBytes(b[1 : l-1])
+	b = b[1 : l-1]
+
+	if len(b) == 0 {
+		*id = 0
+		return
+	}
+
+	v, err := cod.DecodeBytes(b)
 
 	if err != nil {
 		return
