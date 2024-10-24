@@ -111,7 +111,7 @@ func (c *Coder) decode(src []byte) (n int64, err error) {
 
 	src = src[:c.encLen-1]
 
-	if i := bytes.IndexByte(src, head); i > 0 {
+	if i := bytes.IndexByte(src, head); i >= 0 {
 		src = src[i+1:]
 	}
 
