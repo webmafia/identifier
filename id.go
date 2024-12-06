@@ -135,6 +135,10 @@ func (id *ID) Scan(src any) (err error) {
 
 // Value implements driver.Valuer.
 func (id ID) Value() (driver.Value, error) {
+	if id.IsNil() {
+		return nil, nil
+	}
+
 	return int64(id), nil
 }
 
